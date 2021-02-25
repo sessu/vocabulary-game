@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <title>Game</title>
+    <style>
+        #game-area {
+            text-align: center;
+            font-family: sans-serif;
+        }
+
+        #problem {
+            font-size: 20px;
+        }
+
+        #winner {
+            font-size: 72px;
+            color: green;
+        }
+    </style>
+    <script>
+
+    </script>
+</head>
+
+<body>
+    <div id="game-area" />
+</body>
+<script type="text/babel">
+
+    var sampleCards = [
+            ["value for money", "가격 대비 가치가 좋은"],
+            ["luxurious", "호화로운"],
+            ["timeless", "유행을 타지 않는"],
+            ["well–made", "잘 만든"],
+            ["top of the range", "최고급품의"],
+            ["durable", "내구성이 있는"],
+            ["inexpensive", "값이 싼"],
+            ["cool", "멋진"],
+            ["reliable", "믿을 수 있는"],
+            ["stylish", "멋지고 유행을 따른"],
+            ["fashionable", "유행하는"],
+            ["sexy", "섹시한"],
+];
+let problem = -1;
+
+
+
+    class App extends React.Component {
+
+        // Constructor (default view)  
+          constructor(props) {
+            super(props);
+            this.state = {
+                eng: "Click Start to Begin",
+                response: "",
+                score: 0,
+                op1: "", op2: "", op3: "", op4: ""
+            };
+          }
+  
+          render() {
+            if (problem < 0){
+                return (
+                <div>
+                    <h1>Welcome</h1>
+                    <button onClick={this.makeRandomChoices}>Click</button>
+                </div>
+                );
+            }
+
+            if (problem >= sampleCards.length - 1) {
+                return (
+                    <div>All done! Your score was {this.state.score}/{sampleCards.length}</div>
+                );
+            }
+
+            return (
+              <div>
+                <div id="problem">{this.state.eng}</div>
+                <div className="choices">
+                    <button id="b0" onClick={() => this.guess(0)}>{this.state.op1}</button>
+                    <button id="b1" onClick={() => this.guess(1)}>{this.state.op2}</button>
+                    <button id="b2" onClick={() => this.guess(2)}>{this.state.op3}</button>
+                    <button id="b3" onClick={() => this.guess(3)}>{this.state.op4}</button>
+                </div>
+                <div id="feedback" />
+                <div>Score: {this.state.score}</div>
+              </div>
+            );
+          }
+
+          getLength = () => {
+              return sampleCards.length;
+          }
+
+          // Check if guess was correct
+          guess = (e) => {
+              console.log(e);
+              if (e === 0){
+                  document.querySelector("#feedback").innerHTML = "Correct";
+                  this.setState(state => ({
+                      score: this.state.score + 1
+                }));
+              } else {
+                document.querySelector("#feedback").innerHTML = "Incorrect";
+              }
+              this.makeRandomChoices();
+          }
+
+          inputKeyPress = (event) => {
+              if (event.key === "Enter"){
+                  problem ++;
+                  this.setState(state => ({
+                      kor: sampleCards[problem][1],
+                      response: "",
+                      score: state.score + 1
+                  }));
+              }
+          }
+
+          updateResponse = (event) => {
+              this.setState({
+                response: event.target.value
+              });
+          }
+
+          makeRandomChoices = () => {
+
+            // Increment problem and 
+            problem++;
+            let choices = [sampleCards[problem][1]];
+            let nums = [problem];
+
+
+              for (let i = 0; i < 3; i++){
+                  let rand = problem;
+                  while (nums.includes(rand)){
+                    rand = Math.floor(Math.random() * sampleCards.length);
+                  }
+                  choices.push(sampleCards[rand][1]);
+                  nums.push(rand);
+              }
+              console.log(choices);
+
+              this.setState(state => ({
+                  eng: sampleCards[problem][0],
+                      op1: choices[0],
+                      op2: choices[1],
+                      op3: choices[2],
+                      op4: choices[3]
+                }));
+          }
+        }
+  
+        ReactDOM.render(<App />, document.querySelector("#game-area"));
+  
+      </script>
+
+</html>
