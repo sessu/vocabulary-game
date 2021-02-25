@@ -10,28 +10,41 @@
         #game-area {
             text-align: center;
             font-family: sans-serif;
+            border: 1px solid black;
+            height: 500px;
+            width: 85%;
+            margin: auto;
+        }
+
+        #game-area > div > div {
+            margin-top: 10px;
         }
 
         #problem {
             font-size: 20px;
         }
 
-        #winner {
-            font-size: 72px;
-            color: green;
+        #feedback {
+            font-weight: bold;
         }
-    </style>
-    <script>
 
-    </script>
+        #troubleWords, tr, td {
+            margin: auto;
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        /* TODO: Add animations */
+    </style>
 </head>
 
 <body>
     <div id="game-area" />
 </body>
-<script src="vocabulary.js"></script>
+<script src="vocabulary.js" charset="utf-8"></script>
 <script type="text/babel">
-    let problem = -1;
+    let problem = -1, correctAns = -1;
+    let troubleWords = [];
 
     class App extends React.Component {
 
@@ -47,21 +60,37 @@
           }
   
           render() {
+
+            // First time loading
+            // Welcome message and button to begin
             if (problem < 0){
                 return (
                 <div>
                     <h1>Welcome</h1>
-                    <button onClick={this.makeRandomChoices}>Click</button>
+                    <button onClick={this.makeRandomChoices}>Click to Begin</button>
                 </div>
                 );
             }
 
+            // Completed all problems
+            // Display score and problem words
             if (problem >= sampleCards.length - 1) {
+                console.log(troubleWords);
                 return (
-                    <div>All done! Your score was {this.state.score}/{sampleCards.length}</div>
+                    <div>
+                        <h1>All done! Your score was {this.state.score}/{sampleCards.length}</h1>
+                        <h2>Words you missed:</h2>
+                        <table id="troubleWords">
+                            <tbody>
+                                {this.renderTableData()}
+                            </tbody>
+                        </table>
+                    </div>
                 );
             }
 
+            // Default state
+            // Show problem word, 4 options, feedback (correct/incorrect), score
             return (
               <div>
                 <div id="problem">{this.state.eng}</div>
@@ -77,49 +106,36 @@
             );
           }
 
-          getLength = () => {
-              return sampleCards.length;
-          }
-
-          // Check if guess was correct
+          // Submit answer
+          // (argument: button number)
           guess = (e) => {
               console.log(e);
-              if (e === 0){
+              // Right Answer
+              if (e === correctAns){
                   document.querySelector("#feedback").innerHTML = "Correct";
                   this.setState(state => ({
                       score: this.state.score + 1
                 }));
-              } else {
+              } // Wrong answer 
+              else {
                 document.querySelector("#feedback").innerHTML = "Incorrect";
+                troubleWords.push(sampleCards[problem]);
               }
               this.makeRandomChoices();
           }
 
-          inputKeyPress = (event) => {
-              if (event.key === "Enter"){
-                  problem ++;
-                  this.setState(state => ({
-                      kor: sampleCards[problem][1],
-                      response: "",
-                      score: state.score + 1
-                  }));
-              }
-          }
-
-          updateResponse = (event) => {
-              this.setState({
-                response: event.target.value
-              });
-          }
-
+          // Generate new problem
           makeRandomChoices = () => {
-
-            // Increment problem and 
             problem++;
+
+            // Create two arrays
+            // choices: options to be displayed on buttons
+            // nums: index values of the options
+            // [0]: correct answer
             let choices = [sampleCards[problem][1]];
             let nums = [problem];
 
-
+            // Insert 3 random choices into arrays
               for (let i = 0; i < 3; i++){
                   let rand = problem;
                   while (nums.includes(rand)){
@@ -128,8 +144,18 @@
                   choices.push(sampleCards[rand][1]);
                   nums.push(rand);
               }
-              console.log(choices);
 
+              // TODO: Shuffle choices
+              choices = this.shuffleChoices(choices);
+
+              // Check correct answer
+              for (var i = 0; i < choices.length; i++ ){
+                  if (choices[i] === sampleCards[problem][1]){
+                      correctAns = i;
+                  }
+              }
+
+              // Update button with values
               this.setState(state => ({
                   eng: sampleCards[problem][0],
                       op1: choices[0],
@@ -138,10 +164,38 @@
                       op4: choices[3]
                 }));
           }
+
+          // Fisher-Yates Shuffle
+          // Returns shuffled array
+          // https://stackoverflow.com/questions/2450954
+          shuffleChoices = (array) => {
+            var currentIndex = array.length, temporaryValue, randomIndex;
+            while (0 !== currentIndex) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex -= 1;
+                temporaryValue = array[currentIndex];
+                array[currentIndex] = array[randomIndex];
+                array[randomIndex] = temporaryValue;
+            }
+            return array;
+          }
+          
+          // Renders table with missed words
+          renderTableData() {
+              return troubleWords.map((word, index) => {
+                  return (
+                    <tr key={index}>
+                        <td>{index + 1}</td>
+                        <td>{word[0]}</td>
+                        <td>{word[1]}</td>
+                    </tr>
+                  )
+              })
+          }
         }
-  
+
+        // Re-render after every action
         ReactDOM.render(<App />, document.querySelector("#game-area"));
-  
       </script>
 
 </html>

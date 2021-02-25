@@ -1,3 +1,9 @@
+// Flash cards
+// [i][0]: English
+// [i][1]: Korean
+// Ideally a third side would be added with a hint.
+// TODO: Find an easy way to generate this from Google Sheets, Cram, or a DB
+
 var sampleCards = [
     ["value for money", "가격 대비 가치가 좋은"],
     ["luxurious", "호화로운"],
