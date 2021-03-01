@@ -6,36 +6,7 @@
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
     <title>Game</title>
-    <style>
-        #game-area {
-            text-align: center;
-            font-family: sans-serif;
-            border: 1px solid black;
-            height: 500px;
-            width: 85%;
-            margin: auto;
-        }
-
-        #game-area > div > div {
-            margin-top: 10px;
-        }
-
-        #problem {
-            font-size: 20px;
-        }
-
-        #feedback {
-            font-weight: bold;
-        }
-
-        #troubleWords, tr, td {
-            margin: auto;
-            border: 1px solid black;
-            border-collapse: collapse;
-        }
-
-        /* TODO: Add animations */
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
@@ -45,6 +16,8 @@
 <script type="text/babel">
     let problem = -1, correctAns = -1;
     let troubleWords = [];
+    const MAX_PROBLEMS = 10;
+    const SHUFFLE_QUESTIONS = true;
 
     class App extends React.Component {
 
@@ -57,6 +30,8 @@
                 score: 0,
                 op1: "", op2: "", op3: "", op4: ""
             };
+            if (SHUFFLE_QUESTIONS) sampleCards = this.shuffleChoices(sampleCards);
+            sampleCards = sampleCards.slice(0, MAX_PROBLEMS);
           }
   
           render() {
@@ -66,8 +41,10 @@
             if (problem < 0){
                 return (
                 <div>
-                    <h1>Welcome</h1>
-                    <button onClick={this.makeRandomChoices}>Click to Begin</button>
+                    <h1>Welcome!</h1>
+                    <p>In this game, you'll be given a word in the target language, and you'll have to match it to the corresponding translation. There is no time limit.</p>
+                    <p>For this lesson, there are {sampleCards.length} problems.</p>
+                    <button id="start-button" onClick={this.makeRandomChoices}>Click to Begin</button>
                 </div>
                 );
             }
@@ -76,32 +53,46 @@
             // Display score and problem words
             if (problem >= sampleCards.length - 1) {
                 console.log(troubleWords);
-                return (
+                if (troubleWords.length === 0){
+                    return (
+                        <div>
+                        <h1>Congratulations! You got a perfect score!</h1>
+                        <h2>Refresh to play again with different words!</h2>
+                        </div>
+                    );
+                } else {
+                    return (
                     <div>
-                        <h1>All done! Your score was {this.state.score}/{sampleCards.length}</h1>
+                        <h1>Well done! Your score was {sampleCards.length - troubleWords.length}/{sampleCards.length}.</h1>
                         <h2>Words you missed:</h2>
                         <table id="troubleWords">
                             <tbody>
                                 {this.renderTableData()}
-                            </tbody>
-                        </table>
-                    </div>
-                );
+                                </tbody>
+                            </table>
+                        </div>
+                    );
+                }
             }
 
             // Default state
             // Show problem word, 4 options, feedback (correct/incorrect), score
             return (
               <div>
+                <h1>Question {problem+1}</h1>
                 <div id="problem">{this.state.eng}</div>
-                <div className="choices">
-                    <button id="b0" onClick={() => this.guess(0)}>{this.state.op1}</button>
-                    <button id="b1" onClick={() => this.guess(1)}>{this.state.op2}</button>
-                    <button id="b2" onClick={() => this.guess(2)}>{this.state.op3}</button>
-                    <button id="b3" onClick={() => this.guess(3)}>{this.state.op4}</button>
+                <div className="choices-container">
+                    <div className="col">
+                        <div class="choice" id="b0" onClick={() => this.guess(0)}>{this.state.op1}</div>
+                        <div class="choice" id="b2" onClick={() => this.guess(2)}>{this.state.op3}</div>
+                    </div>
+                    <div className="col">
+                        <div class="choice" id="b1" onClick={() => this.guess(1)}>{this.state.op2}</div>
+                        <div class="choice" id="b3" onClick={() => this.guess(3)}>{this.state.op4}</div>
+                    </div>
                 </div>
                 <div id="feedback" />
-                <div>Score: {this.state.score}</div>
+                <div id="score" />
               </div>
             );
           }
@@ -121,6 +112,7 @@
                 document.querySelector("#feedback").innerHTML = "Incorrect";
                 troubleWords.push(sampleCards[problem]);
               }
+              document.querySelector("#score").innerHTML = `Score: ${this.state.score + 1} out of ${problem + 1}`;
               this.makeRandomChoices();
           }
 
@@ -182,6 +174,7 @@
           
           // Renders table with missed words
           renderTableData() {
+              if (troubleWords.length > 0){ 
               return troubleWords.map((word, index) => {
                   return (
                     <tr key={index}>
@@ -191,6 +184,7 @@
                     </tr>
                   )
               })
+            }
           }
         }
 

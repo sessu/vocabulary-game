@@ -1,0 +1,118 @@
+body {
+    background: #F5F6F7;
+}
+
+@keyframes fadein {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 100%;
+    }
+}
+
+#start-button {
+    padding: 10px;
+    background: #ECE9E6;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #FFFFFF, #ECE9E6);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #FFFFFF, #ECE9E6);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    animation-name: fadein;
+    animation-duration: 1s;
+}
+
+#game-area {
+    text-align: center;
+    font-family: sans-serif;
+    height: 500px;
+    width: 85%;
+    margin: auto;
+    background-color: rgba(255, 255, 255, 0.8);
+    /* white with opacity*/
+    padding: 5px;
+}
+
+
+#game-area>div>div {
+    margin-top: 10px;
+}
+
+#problem {
+    font-size: 20px;
+}
+
+#feedback {
+    font-weight: bold;
+}
+
+#troubleWords,
+tr,
+td {
+    margin: auto;
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 3px 10px;
+}
+
+.choices-container {
+    margin: auto;
+    display: flex;
+    width: 75%;
+}
+
+.col {
+    flex: 50%;
+    max-width: 50%;
+    padding: 0 4px;
+}
+
+.choice {
+    background-color: aliceblue;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 5px 0;
+}
+
+
+#b0 {
+    background: #FFEFBA;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #FFFFFF, #FFEFBA);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #FFFFFF, #FFEFBA);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+#b1 {
+    background: #ECE9E6;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #FFFFFF, #ECE9E6);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #FFFFFF, #ECE9E6);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+#b2 {
+    background: #A1FFCE;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #FAFFD1, #A1FFCE);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #FAFFD1, #A1FFCE);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+#b3 {
+    background: #FFEEEE;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #DDEFBB, #FFEEEE);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #DDEFBB, #FFEEEE);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+/* TODO: Add animations */
