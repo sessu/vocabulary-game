@@ -21,7 +21,7 @@ body {
     background: linear-gradient(to right, #FFFFFF, #ECE9E6);
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     animation-name: fadein;
-    animation-duration: 1s;
+    animation-duration: 2s;
 }
 
 #game-area {
@@ -50,7 +50,8 @@ body {
 
 #troubleWords,
 tr,
-td {
+td,
+th {
     margin: auto;
     border: 1px solid black;
     border-collapse: collapse;
@@ -64,8 +65,8 @@ td {
 }
 
 .col {
-    flex: 50%;
-    max-width: 50%;
+    flex: 100%;
+    max-width: 100%;
     padding: 0 4px;
 }
 

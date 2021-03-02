@@ -6,7 +6,9 @@
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
     <title>Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="media-queries.css">
 </head>
 
 <body>
@@ -66,6 +68,13 @@
                         <h1>Well done! Your score was {sampleCards.length - troubleWords.length}/{sampleCards.length}.</h1>
                         <h2>Words you missed:</h2>
                         <table id="troubleWords">
+                            <thead>
+                                <tr>
+                                    <th className="index">#</th>
+                                    <th>Question</th>
+                                    <th>Correct Answer</th> 
+                                </tr>
+                            </thead>
                             <tbody>
                                 {this.renderTableData()}
                                 </tbody>
@@ -83,12 +92,10 @@
                 <div id="problem">{this.state.eng}</div>
                 <div className="choices-container">
                     <div className="col">
-                        <div class="choice" id="b0" onClick={() => this.guess(0)}>{this.state.op1}</div>
-                        <div class="choice" id="b2" onClick={() => this.guess(2)}>{this.state.op3}</div>
-                    </div>
-                    <div className="col">
-                        <div class="choice" id="b1" onClick={() => this.guess(1)}>{this.state.op2}</div>
-                        <div class="choice" id="b3" onClick={() => this.guess(3)}>{this.state.op4}</div>
+                        <div className="choice" id="b0" onClick={() => this.guess(0)}>{this.state.op1}</div>
+                        <div className="choice" id="b2" onClick={() => this.guess(2)}>{this.state.op3}</div>
+                        <div className="choice" id="b1" onClick={() => this.guess(1)}>{this.state.op2}</div>
+                        <div className="choice" id="b3" onClick={() => this.guess(3)}>{this.state.op4}</div>
                     </div>
                 </div>
                 <div id="feedback" />
@@ -178,7 +185,7 @@
               return troubleWords.map((word, index) => {
                   return (
                     <tr key={index}>
-                        <td>{index + 1}</td>
+                        <td className="index">{index + 1}</td>
                         <td>{word[0]}</td>
                         <td>{word[1]}</td>
                     </tr>

@@ -21,8 +21,7 @@ var sampleCards2 = [
 
 var sampleCards = [
     ["affordable", "저렴한", ""],
-    ["cool", "멋진", "is modern and desirable (often used by young people)"],
-    ["defective", "결함이 있는", ""],
+    ["cool", "멋진", "is modern and stylish, young people use this word"],
     ["develop", "발전시키다", ""],
     ["durable", "내구성이 있는", "does not wear out"],
     ["endorse", "지지하다", ""],

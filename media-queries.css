@@ -1,0 +1,9 @@
+@media screen and (max-width: 30em){
+    #game-area {
+        width: 100%;
+    }
+
+    .index {
+        display: none;
+    }
+}
